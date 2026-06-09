@@ -45,6 +45,18 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+});
+
+// Compatibility route for auth scaffolding and tests
+Route::middleware(['auth'])->get('/dashboard', [
+    AdminDashboardController::class,
+    'index'
+])->name('dashboard');
+
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+
+
     Route::resource('categories', AdminCategoryController::class)->except(['show']);
     Route::resource('products', AdminProductController::class)->except(['show']);
     Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);

@@ -16,12 +16,17 @@
         <div class="rounded-[2rem] bg-white p-8 shadow-sm lg:col-span-2">
             <h2 class="text-xl font-semibold text-slate-900">Purchased items</h2>
             <div class="mt-6 space-y-4">
-                @foreach($order->items as $item)
+@foreach($order->items as $item)
                     <div class="rounded-3xl border border-slate-200 p-4">
                         <div class="flex items-center justify-between gap-4">
-                            <div>
-                                <p class="font-semibold text-slate-900">{{ $item->product_name }}</p>
-                                <p class="mt-2 text-sm text-slate-600">{{ $item->variant_name }}</p>
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-[1.5rem] overflow-hidden border border-slate-200" aria-hidden="true">
+                                    <img src="{{ $item->variant?->product?->images->first()?->url ?? 'https://via.placeholder.com/300' }}" alt="{{ $item->product_name }}" class="w-full h-full object-cover" loading="lazy" />
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-slate-900">{{ $item->product_name }}</p>
+                                    <p class="mt-2 text-sm text-slate-600">{{ $item->variant_name }}</p>
+                                </div>
                             </div>
                             <p class="text-sm font-semibold text-slate-900">${{ number_format($item->subtotal, 2) }}</p>
                         </div>

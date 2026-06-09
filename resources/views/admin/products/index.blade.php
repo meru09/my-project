@@ -13,10 +13,15 @@
     <div class="rounded-[2rem] bg-white p-6 shadow-sm">
         <div class="grid gap-4">
             @forelse($products as $product)
-                <div class="rounded-3xl border border-slate-200 p-4 sm:flex sm:items-center sm:justify-between">
-                    <div class="space-y-2">
-                        <p class="text-lg font-semibold text-slate-900">{{ $product->name }}</p>
-                        <p class="text-sm text-slate-500">{{ $product->category->name }} · ${{ number_format($product->base_price, 2) }}</p>
+<div class="rounded-3xl border border-slate-200 p-4 sm:flex sm:items-center sm:justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-[1.5rem] overflow-hidden border border-slate-200" aria-hidden="true">
+                            <img src="{{ $product->images->first()?->url ?? 'https://via.placeholder.com/300' }}" alt="{{ $product->name }}" class="w-full h-full object-cover" loading="lazy" />
+                        </div>
+                        <div class="space-y-2">
+                            <p class="text-lg font-semibold text-slate-900">{{ $product->name }}</p>
+                            <p class="text-sm text-slate-500">{{ $product->category->name }} · ${{ number_format($product->base_price, 2) }}</p>
+                        </div>
                     </div>
                     <div class="flex flex-wrap gap-3 text-sm">
                         <a href="{{ route('admin.products.edit', $product) }}" class="rounded-full border border-slate-300 px-4 py-2 text-slate-900 hover:bg-slate-50">Edit</a>

@@ -71,10 +71,11 @@
     <div class="products-grid">
         @forelse($featuredProducts->take(8) as $product)
             <article class="prod-card">
-                <div class="prod-img bg1">
+<div class="prod-img bg1">
                     <span class="prod-badge badge-new">NEW</span>
                     <span class="prod-emoji">✨</span>
                     <div class="prod-wish">♥</div>
+                    <img src="{{ $product->images->first()?->url ?? 'https://via.placeholder.com/500' }}" alt="{{ $product->name }}" loading="lazy" class="h-full w-full object-cover" />
                 </div>
                 <div class="prod-info">
                     <div class="prod-brand">{{ $product->category->name ?? config('app.name') }}</div>
