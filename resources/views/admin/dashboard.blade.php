@@ -1,53 +1,69 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="space-y-8">
-    <div class="grid gap-6 md:grid-cols-4">
-        <div class="rounded-[2rem] bg-white p-6 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.32em] text-slate-500">Today</p>
-            <p class="mt-4 text-3xl font-semibold text-slate-900">{{ $ordersToday }}</p>
-            <p class="mt-2 text-sm text-slate-500">Orders placed today</p>
-        </div>
-        <div class="rounded-[2rem] bg-white p-6 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.32em] text-slate-500">This month</p>
-            <p class="mt-4 text-3xl font-semibold text-slate-900">{{ $ordersMonth }}</p>
-            <p class="mt-2 text-sm text-slate-500">Orders this month</p>
-        </div>
-        <div class="rounded-[2rem] bg-white p-6 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.32em] text-slate-500">Low stock</p>
-            <p class="mt-4 text-3xl font-semibold text-slate-900">{{ $lowStockCount }}</p>
-            <p class="mt-2 text-sm text-slate-500">Variants at risk</p>
-        </div>
-        <div class="rounded-[2rem] bg-white p-6 shadow-sm">
-            <p class="text-sm uppercase tracking-[0.32em] text-slate-500">Revenue</p>
-            <p class="mt-4 text-3xl font-semibold text-slate-900">${{ number_format($revenue, 2) }}</p>
-            <p class="mt-2 text-sm text-slate-500">Total sales</p>
+<div class="admin-page">
+    <div class="admin-page__header">
+        <div>
+            <p class="admin-eyebrow">Dashboard</p>
+            <h1 class="admin-h1">Store overview</h1>
         </div>
     </div>
 
-    <div class="grid gap-6 lg:grid-cols-2">
-        <div class="rounded-[2rem] bg-white p-8 shadow-sm">
-            <h2 class="text-xl font-semibold text-slate-900">Recent orders</h2>
-            <div class="mt-6 space-y-4">
+    <section class="admin-grid admin-grid--4">
+        <article class="admin-card admin-card--metric">
+            <p class="admin-card__label">Today</p>
+            <div class="admin-card__value">{{ $ordersToday }}</div>
+            <div class="admin-card__meta">Orders placed today</div>
+        </article>
+
+        <article class="admin-card admin-card--metric">
+            <p class="admin-card__label">This month</p>
+            <div class="admin-card__value">{{ $ordersMonth }}</div>
+            <div class="admin-card__meta">Orders this month</div>
+        </article>
+
+        <article class="admin-card admin-card--metric">
+            <p class="admin-card__label">Low stock</p>
+            <div class="admin-card__value">{{ $lowStockCount }}</div>
+            <div class="admin-card__meta">Variants at risk</div>
+        </article>
+
+        <article class="admin-card admin-card--metric">
+            <p class="admin-card__label">Revenue</p>
+            <div class="admin-card__value">${{ number_format($revenue, 2) }}</div>
+            <div class="admin-card__meta">Total sales</div>
+        </article>
+    </section>
+
+    <section class="admin-grid admin-grid--2">
+        <article class="admin-card">
+            <h2 class="admin-h2">Recent orders</h2>
+            <div class="admin-list">
                 @foreach($orders as $order)
-                    <a href="{{ route('admin.orders.show', $order) }}" class="block rounded-3xl border border-slate-200 p-4 transition hover:border-slate-300">
-                        <div class="flex items-center justify-between">
-                            <span class="font-semibold text-slate-900">{{ $order->order_number }}</span>
-                            <span class="text-sm text-slate-500">${{ number_format($order->total, 2) }}</span>
+                    <a href="{{ route('admin.orders.show', $order) }}" class="admin-row">
+                        <div class="admin-row__left">
+                            <div class="admin-row__title">{{ $order->order_number }}</div>
+                            <div class="admin-row__sub">{{ $order->created_at->format('M d, Y') }} — {{ $order->status }}</div>
                         </div>
-                        <p class="mt-2 text-sm text-slate-600">{{ $order->created_at->format('M d, Y') }} — {{ $order->status }}</p>
+                        <div class="admin-row__right">${{ number_format($order->total, 2) }}</div>
                     </a>
                 @endforeach
+
+                @if($orders->isEmpty())
+                    <div class="admin-empty">No orders found.</div>
+                @endif
             </div>
-        </div>
-        <div class="rounded-[2rem] bg-white p-8 shadow-sm">
-            <h2 class="text-xl font-semibold text-slate-900">Store overview</h2>
-            <div class="mt-6 space-y-4 text-slate-600">
-                <p><span class="font-semibold text-slate-900">Customers:</span> {{ $customers }}</p>
-                <p><span class="font-semibold text-slate-900">Recent orders:</span> {{ $orders->count() }}</p>
-                <p><span class="font-semibold text-slate-900">Quick actions:</span> Manage categories, products, and shipments from the sidebar.</p>
+        </article>
+
+        <article class="admin-card">
+            <h2 class="admin-h2">Store overview</h2>
+            <div class="admin-prose">
+                <div class="admin-prose__item"><span class="admin-prose__k">Customers:</span> <span class="admin-prose__v">{{ $customers }}</span></div>
+                <div class="admin-prose__item"><span class="admin-prose__k">Recent orders:</span> <span class="admin-prose__v">{{ $orders->count() }}</span></div>
+                <div class="admin-prose__item"><span class="admin-prose__k">Quick actions:</span> <span class="admin-prose__v">Manage categories, products, and shipments from the sidebar.</span></div>
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
 </div>
+
 @endsection

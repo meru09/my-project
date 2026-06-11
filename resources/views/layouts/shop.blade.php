@@ -38,11 +38,7 @@
                         <button type="submit" class="nav-action" style="background: none; border: none; font-family: inherit; cursor: pointer;">Logout</button>
                     </form>
                 @endguest
-                <a href="{{ route('cart.index') }}" class="nav-action cart-badge" aria-label="Cart">
-                    🛍️
-                    @php $cartCount = count(session('cart', [])); @endphp
-                    @if($cartCount > 0)<span class="badge">{{ $cartCount }}</span>@endif
-                </a>
+
             </div>
         </nav>
 

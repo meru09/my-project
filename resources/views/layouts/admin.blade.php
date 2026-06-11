@@ -6,28 +6,81 @@
     <title>{{ $title ?? 'Admin Dashboard' }}</title>
     @vite(['resources/css/app.css'])
 </head>
-<body class="bg-slate-100 text-slate-900 font-sans">
-    <div class="min-h-screen">
-        <header class="bg-slate-950 text-slate-100 shadow-sm">
-            <div class="mx-auto max-w-7xl px-4 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                <div>
-                    <a href="{{ route('admin.dashboard') }}" class="text-xl font-semibold">Beauty Admin</a>
-                    <p class="text-sm text-slate-400">Store management and analytics</p>
-                </div>
-                <nav class="flex flex-wrap items-center gap-3 text-sm text-slate-300">
-                    <a href="{{ route('admin.dashboard') }}" class="hover:text-white">Dashboard</a>
-                    <a href="{{ route('admin.categories.index') }}" class="hover:text-white">Categories</a>
-                    <a href="{{ route('admin.products.index') }}" class="hover:text-white">Products</a>
-                    <a href="{{ route('admin.orders.index') }}" class="hover:text-white">Orders</a>
-                    <a href="{{ route('admin.customers.index') }}" class="hover:text-white">Customers</a>
-                    <a href="{{ route('admin.settings.edit') }}" class="hover:text-white">Settings</a>
-                </nav>
+<body class="admin-body">
+
+<div class="admin-shell">
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="admin-brand">
+            <div class="admin-brand__logo">Beauty Admin</div>
+            <div class="admin-brand__meta">Store management</div>
+        </div>
+
+        <button class="admin-sidebar__toggle" type="button" aria-label="Close sidebar" id="adminSidebarClose">✕</button>
+
+        <nav class="admin-nav">
+            <a class="admin-nav__link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+            <a class="admin-nav__link" href="{{ route('admin.categories.index') }}">Categories</a>
+            <a class="admin-nav__link" href="{{ route('admin.products.index') }}">Products</a>
+            <a class="admin-nav__link" href="{{ route('admin.orders.index') }}">Orders</a>
+            <a class="admin-nav__link" href="{{ route('admin.customers.index') }}">Customers</a>
+            <a class="admin-nav__link" href="{{ route('admin.settings.edit') }}">Settings</a>
+        </nav>
+
+        <div class="admin-sidebar__footer">
+            <div class="admin-chip">v1</div>
+            <div class="admin-hint">Admin UI refreshed</div>
+        </div>
+    </aside>
+
+    <div class="admin-main">
+        <header class="admin-topbar">
+            <button class="admin-topbar__burger" type="button" aria-label="Open sidebar" id="adminSidebarOpen">☰</button>
+
+            <div class="admin-topbar__title">
+                <div class="admin-topbar__headline">Admin panel</div>
+                <div class="admin-topbar__sub">Analytics, catalog & order management</div>
+            </div>
+
+            <div class="admin-topbar__actions">
+                <a class="admin-btn admin-btn--ghost" href="{{ route('home') }}">View store</a>
             </div>
         </header>
-        <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+
+        <main class="admin-content">
             @include('components.flash')
             @yield('content')
         </main>
     </div>
+</div>
+
+<script>
+(function () {
+    const sidebar = document.getElementById('adminSidebar');
+    const openBtn = document.getElementById('adminSidebarOpen');
+    const closeBtn = document.getElementById('adminSidebarClose');
+
+    if (!sidebar || !openBtn || !closeBtn) return;
+
+    function openSidebar() {
+        sidebar.classList.add('is-open');
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('is-open');
+    }
+
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+
+    // Close on outside click (mobile)
+    document.addEventListener('click', function (e) {
+        const target = e.target;
+        const isSidebar = sidebar.contains(target);
+        const clickedBurger = target === openBtn;
+        if (!isSidebar && !clickedBurger) closeSidebar();
+    });
+})();
+</script>
 </body>
 </html>
+
